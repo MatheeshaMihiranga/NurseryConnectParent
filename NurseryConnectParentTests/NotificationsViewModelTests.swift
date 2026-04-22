@@ -47,27 +47,27 @@ final class NotificationsViewModelTests: XCTestCase {
 
     // MARK: - Mark As Read
 
-    func testMarkAsReadDecrementsUnreadCount() {
+    func testMarkAsReadDecrementsUnreadCount() throws {
         guard let unread = sut.notifications.first(where: { !$0.isRead }) else {
-            XCTSkip("No unread notification available in sample data")
+            throw XCTSkip("No unread notification available in sample data")
         }
         let initialCount = sut.unreadCount
         sut.markAsRead(unread)
         XCTAssertEqual(sut.unreadCount, initialCount - 1, "Unread count should decrease by 1")
     }
 
-    func testMarkAsReadSetsIsReadTrue() {
+    func testMarkAsReadSetsIsReadTrue() throws {
         guard let unread = sut.notifications.first(where: { !$0.isRead }) else {
-            XCTSkip("No unread notification available in sample data")
+            throw XCTSkip("No unread notification available in sample data")
         }
         sut.markAsRead(unread)
         let updated = sut.notifications.first { $0.id == unread.id }
         XCTAssertTrue(updated?.isRead ?? false, "Notification should be marked as read")
     }
 
-    func testMarkingAlreadyReadNotificationDoesNotChangeCount() {
+    func testMarkingAlreadyReadNotificationDoesNotChangeCount() throws {
         guard let alreadyRead = sut.notifications.first(where: { $0.isRead }) else {
-            XCTSkip("No already-read notification in sample data")
+            throw XCTSkip("No already-read notification in sample data")
         }
         let countBefore = sut.unreadCount
         sut.markAsRead(alreadyRead)
