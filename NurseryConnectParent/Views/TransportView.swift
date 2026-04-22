@@ -80,6 +80,21 @@ struct TransportView: View {
             .refreshable {
                 viewModel.refresh()
             }
+            .overlay {
+                if viewModel.isLoading {
+                    ProgressView("Updating…")
+                        .padding()
+                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                }
+            }
+            .alert("Error", isPresented: Binding(
+                get: { viewModel.errorMessage != nil },
+                set: { if !$0 { viewModel.errorMessage = nil } }
+            )) {
+                Button("OK", role: .cancel) { viewModel.errorMessage = nil }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: {

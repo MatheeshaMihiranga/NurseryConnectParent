@@ -28,8 +28,14 @@ struct NurseryConnectParentApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .modelContainer(persistenceService.container!)
+            if let container = persistenceService.container {
+                ContentView()
+                    .modelContainer(container)
+            } else {
+                Text("Unable to load app data. Please restart the app.")
+                    .multilineTextAlignment(.center)
+                    .padding()
+            }
         }
     }
     

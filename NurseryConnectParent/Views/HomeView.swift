@@ -9,8 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
-    @State private var selectedTab = 0
-    
+    @Binding var selectedTab: Int
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -158,5 +158,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(selectedTab: .constant(0))
 }

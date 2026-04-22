@@ -14,28 +14,35 @@ class HomeViewModel {
     var latestDiaryEntries: [DiaryEntry] = []
     var transportUpdate: TransportUpdate?
     var unreadNotificationCount: Int = 0
-    
+    var isLoading = false
+
     private let dataProvider = SampleDataProvider.shared
-    
+
     init(child: Child? = nil) {
         self.child = child ?? dataProvider.sampleChild
         loadData()
     }
-    
+
     func loadData() {
         // Get latest 3 diary entries
         let allEntries = dataProvider.getDiaryEntries(for: child.id)
         latestDiaryEntries = Array(allEntries.sorted(by: { $0.timestamp > $1.timestamp }).prefix(3))
-        
+
         // Get transport update
         transportUpdate = dataProvider.getTransportUpdate(for: child.id)
-        
+
         // Get unread notification count
         unreadNotificationCount = dataProvider.getUnreadNotificationCount()
     }
-    
+
+    /// Simulates a network refresh using async/await
     func refresh() {
-        loadData()
+        Task { @MainActor in
+            isLoading = true
+            await DataService.shared.refreshData()
+            loadData()
+            isLoading = false
+        }
     }
     
     var currentStatus: String {

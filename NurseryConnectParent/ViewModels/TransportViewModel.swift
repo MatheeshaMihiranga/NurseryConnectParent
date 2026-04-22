@@ -12,22 +12,31 @@ import SwiftUI
 class TransportViewModel {
     var transportUpdate: TransportUpdate?
     var isTransportEligible: Bool = false
-    
+    var isLoading = false
+    var errorMessage: String?
+
     private let dataProvider = SampleDataProvider.shared
     private let childId: UUID
-    
+
     init(childId: UUID? = nil) {
         self.childId = childId ?? SampleDataProvider.shared.sampleChild.id
         self.isTransportEligible = dataProvider.sampleChild.isTransportEligible
         loadTransportUpdate()
     }
-    
+
     func loadTransportUpdate() {
         transportUpdate = dataProvider.getTransportUpdate(for: childId)
     }
-    
+
+    /// Simulates a live transport refresh using async/await
     func refresh() {
-        loadTransportUpdate()
+        Task { @MainActor in
+            isLoading = true
+            errorMessage = nil
+            await DataService.shared.refreshData()
+            loadTransportUpdate()
+            isLoading = false
+        }
     }
     
     var statusTitle: String {

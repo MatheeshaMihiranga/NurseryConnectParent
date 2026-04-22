@@ -10,12 +10,16 @@ import SwiftData
 
 struct ContentView: View {
     @State private var selectedTab = 0
-    @State private var notificationsViewModel = NotificationsViewModel()
-    
+    @Query private var allNotifications: [NotificationItem]
+
+    private var unreadCount: Int {
+        allNotifications.filter { !$0.isRead }.count
+    }
+
     var body: some View {
         TabView(selection: $selectedTab) {
             // Home Tab
-            HomeView()
+            HomeView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
@@ -43,9 +47,9 @@ struct ContentView: View {
                 .tabItem {
                     Label("Notifications", systemImage: "bell.fill")
                 }
-                .badge(notificationsViewModel.unreadCount > 0 ? notificationsViewModel.unreadCount : 0)
+                .badge(unreadCount > 0 ? unreadCount : 0)
                 .tag(3)
-                .accessibilityLabel("Notifications tab, \(notificationsViewModel.unreadCount) unread")
+                .accessibilityLabel("Notifications tab, \(unreadCount) unread")
             
             // Profile Tab
             ProfileView()
