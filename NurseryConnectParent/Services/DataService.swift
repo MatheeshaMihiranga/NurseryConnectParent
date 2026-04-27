@@ -127,6 +127,45 @@ class DataService {
         print("Mark notification \(notificationId) as read")
     }
     
+    // MARK: - Diary CRUD Operations
+    
+    /// Create a new diary entry
+    func createDiaryEntry(_ entry: DiaryEntry) {
+        if useSampleData {
+            // Add to sample data provider
+            sampleProvider.sampleDiaryEntries.append(entry)
+        } else {
+            // In production, insert into SwiftData
+            // modelContext?.insert(entry)
+            // try? modelContext?.save()
+        }
+    }
+    
+    /// Update an existing diary entry
+    func updateDiaryEntry(_ entry: DiaryEntry) {
+        if useSampleData {
+            // Update in sample data provider
+            if let index = sampleProvider.sampleDiaryEntries.firstIndex(where: { $0.id == entry.id }) {
+                sampleProvider.sampleDiaryEntries[index] = entry
+            }
+        } else {
+            // In production, SwiftData automatically tracks changes
+            // try? modelContext?.save()
+        }
+    }
+    
+    /// Delete a diary entry
+    func deleteDiaryEntry(_ entry: DiaryEntry) {
+        if useSampleData {
+            // Remove from sample data provider
+            sampleProvider.sampleDiaryEntries.removeAll { $0.id == entry.id }
+        } else {
+            // In production, delete from SwiftData
+            // modelContext?.delete(entry)
+            // try? modelContext?.save()
+        }
+    }
+    
     // MARK: - Data Refresh
     
     func refreshData() async {

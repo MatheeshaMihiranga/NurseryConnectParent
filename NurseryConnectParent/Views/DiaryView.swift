@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DiaryView: View {
     @State private var viewModel = DiaryViewModel()
+    @State private var showingAddEntry = false
     
     var body: some View {
         NavigationStack {
@@ -59,11 +60,18 @@ struct DiaryView: View {
                                 
                                 // Entries for this date
                                 ForEach(entries, id: \.id) { entry in
-                                    NavigationLink(destination: DiaryDetailView(entry: entry)) {
+                                    NavigationLink(destination: DiaryDetailView(entry: entry, viewModel: viewModel)) {
                                         DiaryEntryCard(entry: entry)
                                     }
                                     .buttonStyle(.plain)
                                     .padding(.horizontal)
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                        Button(role: .destructive) {
+                                            viewModel.deleteEntry(entry)
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -99,6 +107,20 @@ struct DiaryView: View {
                         Image(systemName: "arrow.clockwise")
                             .accessibilityLabel("Refresh")
                     }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        showingAddEntry = true
+                    }) {
+                        Image(systemName: "plus")
+                            .accessibilityLabel("Add Entry")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddEntry) {
+                DiaryEntryFormView(childId: viewModel.childId) { newEntry in
+                    viewModel.createEntry(newEntry)
                 }
             }
         }

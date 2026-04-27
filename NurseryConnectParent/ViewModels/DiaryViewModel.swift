@@ -15,9 +15,10 @@ class DiaryViewModel {
     var searchText: String = ""
     var isLoading = false
     var errorMessage: String?
+    
+    let childId: UUID
 
     private let dataProvider = SampleDataProvider.shared
-    private let childId: UUID
 
     init(childId: UUID? = nil) {
         self.childId = childId ?? SampleDataProvider.shared.sampleChild.id
@@ -74,6 +75,34 @@ class DiaryViewModel {
         }
         
         return grouped.sorted(by: { $0.key > $1.key }).map { ($0.key, $0.value) }
+    }
+    
+    // MARK: - CRUD Operations
+    
+    /// Create a new diary entry
+    func createEntry(_ entry: DiaryEntry) {
+        DataService.shared.createDiaryEntry(entry)
+        loadDiaryEntries()
+    }
+    
+    /// Update an existing diary entry
+    func updateEntry(_ entry: DiaryEntry) {
+        DataService.shared.updateDiaryEntry(entry)
+        loadDiaryEntries()
+    }
+    
+    /// Delete a diary entry
+    func deleteEntry(_ entry: DiaryEntry) {
+        DataService.shared.deleteDiaryEntry(entry)
+        loadDiaryEntries()
+    }
+    
+    /// Delete multiple entries at specific offsets
+    func deleteEntries(at offsets: IndexSet, from entries: [DiaryEntry]) {
+        for index in offsets {
+            let entry = entries[index]
+            deleteEntry(entry)
+        }
     }
 }
 

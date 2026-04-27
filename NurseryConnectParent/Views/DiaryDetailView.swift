@@ -9,7 +9,11 @@ import SwiftUI
 
 struct DiaryDetailView: View {
     let entry: DiaryEntry
+    var viewModel: DiaryViewModel?
+    
     @Environment(\.dismiss) private var dismiss
+    @State private var showingEditSheet = false
+    @State private var showingDeleteAlert = false
     
     var body: some View {
         ScrollView {
@@ -137,11 +141,45 @@ struct DiaryDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button(action: {
-                    // Share functionality could be added here
-                }) {
-                    Image(systemName: "square.and.arrow.up")
-                        .accessibilityLabel("Share")
+                HStack(spacing: 16) {
+                    if viewModel != nil {
+                        Button(action: {
+                            showingEditSheet = true
+                        }) {
+                            Image(systemName: "pencil")
+                                .accessibilityLabel("Edit")
+                        }
+                        
+                        Button(role: .destructive, action: {
+                            showingDeleteAlert = true
+                        }) {
+                            Image(systemName: "trash")
+                                .accessibilityLabel("Delete")
+                        }
+                    }
+                    
+                    Button(action: {
+                        // Share functionality could be added here
+                    }) {
+                        Image(systemName: "square.and.arrow.up")
+                            .accessibilityLabel("Share")
+                    }
+                }
+            }
+        }
+        .alert("Delete Entry", isPresented: $showingDeleteAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                viewModel?.deleteEntry(entry)
+                dismiss()
+            }
+        } message: {
+            Text("Are you sure you want to delete this diary entry? This action cannot be undone.")
+        }
+        .sheet(isPresented: $showingEditSheet) {
+            if let viewModel = viewModel {
+                DiaryEntryFormView(childId: entry.childId, entry: entry) { updatedEntry in
+                    viewModel.updateEntry(updatedEntry)
                 }
             }
         }
@@ -192,7 +230,10 @@ struct InfoBox: View {
 
 #Preview {
     NavigationStack {
-        DiaryDetailView(entry: SampleDataProvider.shared.sampleDiaryEntries[0])
+        DiaryDetailView(
+            entry: SampleDataProvider.shared.sampleDiaryEntries[0],
+            viewModel: DiaryViewModel()
+        )
     }
 }
 
