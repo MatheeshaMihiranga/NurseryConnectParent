@@ -10,6 +10,7 @@ import MapKit
 
 struct TransportView: View {
     @State private var viewModel = TransportViewModel()
+    @State private var requestViewModel = TransportRequestViewModel()
     @State private var cameraPosition: MapCameraPosition = .automatic
     
     var body: some View {
@@ -28,6 +29,66 @@ struct TransportView: View {
                         // Transport Status Card
                         TransportStatusCard(transportUpdate: transport)
                             .padding(.horizontal)
+                        
+                        // Transport Requests Section
+                        if viewModel.isTransportEligible {
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack {
+                                    Text("Your Requests")
+                                        .font(.title3)
+                                        .fontWeight(.semibold)
+                                    
+                                    Spacer()
+                                    
+                                    Button(action: {
+                                        requestViewModel.showingAddRequest = true
+                                    }) {
+                                        Label("New Request", systemImage: "plus.circle.fill")
+                                            .font(.subheadline)
+                                    }
+                                }
+                                .padding(.horizontal)
+                                
+                                if requestViewModel.transportRequests.isEmpty {
+                                    Text("No transport requests yet")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(.gray.opacity(0.1))
+                                        )
+                                        .padding(.horizontal)
+                                } else {
+                                    ForEach(requestViewModel.transportRequests, id: \.id) { request in
+                                        TransportRequestCard(request: request)
+                                            .padding(.horizontal)
+                                            .contextMenu {
+                                                if request.status == .pending {
+                                                    Button {
+                                                        requestViewModel.editingRequest = request
+                                                    } label: {
+                                                        Label("Edit", systemImage: "pencil")
+                                                    }
+                                                    
+                                                    Button(role: .destructive) {
+                                                        requestViewModel.cancelRequest(request)
+                                                    } label: {
+                                                        Label("Cancel Request", systemImage: "xmark.circle")
+                                                    }
+                                                }
+                                                
+                                                Button(role: .destructive) {
+                                                    requestViewModel.deleteRequest(request)
+                                                } label: {
+                                                    Label("Delete", systemImage: "trash")
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
                         
                         // Map Placeholder
                         VStack(alignment: .leading, spacing: 12) {
@@ -104,6 +165,25 @@ struct TransportView: View {
                             .accessibilityLabel("Refresh")
                     }
                 }
+                
+                if viewModel.isTransportEligible {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            requestViewModel.showingAddRequest = true
+                        }) {
+                            Label("Request", systemImage: "plus.circle.fill")
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $requestViewModel.showingAddRequest) {
+                TransportRequestFormView(viewModel: requestViewModel)
+            }
+            .sheet(item: Binding(
+                get: { requestViewModel.editingRequest },
+                set: { requestViewModel.editingRequest = $0 }
+            )) { request in
+                TransportRequestFormView(viewModel: requestViewModel, editingRequest: request)
             }
         }
     }

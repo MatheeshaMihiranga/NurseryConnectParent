@@ -9,12 +9,41 @@ import SwiftUI
 
 struct DiaryView: View {
     @State private var viewModel = DiaryViewModel()
-    @State private var showingAddEntry = false
+    @State private var parentNotesViewModel = ParentNotesViewModel()
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
+                    // Parent Notes Section
+                    if !parentNotesViewModel.parentNotes.isEmpty {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Your Notes")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal)
+                            
+                            ForEach(parentNotesViewModel.parentNotes, id: \.id) { note in
+                                ParentNoteCard(note: note)
+                                    .padding(.horizontal)
+                                    .contextMenu {
+                                        Button {
+                                            parentNotesViewModel.editingNote = note
+                                        } label: {
+                                            Label("Edit", systemImage: "pencil")
+                                        }
+                                        
+                                        Button(role: .destructive) {
+                                            parentNotesViewModel.deleteNote(note)
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
+                            }
+                        }
+                        .padding(.top)
+                    }
+                    
                     // Filter Chips
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
@@ -60,18 +89,11 @@ struct DiaryView: View {
                                 
                                 // Entries for this date
                                 ForEach(entries, id: \.id) { entry in
-                                    NavigationLink(destination: DiaryDetailView(entry: entry, viewModel: viewModel)) {
+                                    NavigationLink(destination: DiaryDetailView(entry: entry)) {
                                         DiaryEntryCard(entry: entry)
                                     }
                                     .buttonStyle(.plain)
                                     .padding(.horizontal)
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                        Button(role: .destructive) {
-                                            viewModel.deleteEntry(entry)
-                                        } label: {
-                                            Label("Delete", systemImage: "trash")
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -109,19 +131,22 @@ struct DiaryView: View {
                     }
                 }
                 
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        showingAddEntry = true
+                        parentNotesViewModel.showingAddNote = true
                     }) {
-                        Image(systemName: "plus")
-                            .accessibilityLabel("Add Entry")
+                        Label("Add Note", systemImage: "plus.circle.fill")
                     }
                 }
             }
-            .sheet(isPresented: $showingAddEntry) {
-                DiaryEntryFormView(childId: viewModel.childId) { newEntry in
-                    viewModel.createEntry(newEntry)
-                }
+            .sheet(isPresented: $parentNotesViewModel.showingAddNote) {
+                ParentNoteFormView(viewModel: parentNotesViewModel)
+            }
+            .sheet(item: Binding(
+                get: { parentNotesViewModel.editingNote },
+                set: { parentNotesViewModel.editingNote = $0 }
+            )) { note in
+                ParentNoteFormView(viewModel: parentNotesViewModel, editingNote: note)
             }
         }
     }

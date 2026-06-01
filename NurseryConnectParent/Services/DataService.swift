@@ -127,43 +127,107 @@ class DataService {
         print("Mark notification \(notificationId) as read")
     }
     
-    // MARK: - Diary CRUD Operations
+    // MARK: - Parent Notes CRUD
     
-    /// Create a new diary entry
-    func createDiaryEntry(_ entry: DiaryEntry) {
-        if useSampleData {
-            // Add to sample data provider
-            sampleProvider.sampleDiaryEntries.append(entry)
-        } else {
-            // In production, insert into SwiftData
-            // modelContext?.insert(entry)
-            // try? modelContext?.save()
-        }
+    func getParentNotes(for childId: UUID) -> [ParentNote] {
+        guard let context = modelContext else { return [] }
+        
+        let predicate = #Predicate<ParentNote> { $0.childId == childId }
+        let descriptor = FetchDescriptor(predicate: predicate, sortBy: [SortDescriptor(\.timestamp, order: .reverse)])
+        
+        return (try? context.fetch(descriptor)) ?? []
     }
     
-    /// Update an existing diary entry
-    func updateDiaryEntry(_ entry: DiaryEntry) {
-        if useSampleData {
-            // Update in sample data provider
-            if let index = sampleProvider.sampleDiaryEntries.firstIndex(where: { $0.id == entry.id }) {
-                sampleProvider.sampleDiaryEntries[index] = entry
-            }
-        } else {
-            // In production, SwiftData automatically tracks changes
-            // try? modelContext?.save()
+    func createParentNote(_ note: ParentNote) throws {
+        guard let context = modelContext else { 
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
         }
+        
+        context.insert(note)
+        try context.save()
     }
     
-    /// Delete a diary entry
-    func deleteDiaryEntry(_ entry: DiaryEntry) {
-        if useSampleData {
-            // Remove from sample data provider
-            sampleProvider.sampleDiaryEntries.removeAll { $0.id == entry.id }
-        } else {
-            // In production, delete from SwiftData
-            // modelContext?.delete(entry)
-            // try? modelContext?.save()
+    func updateParentNote(_ note: ParentNote, content: String, category: NoteCategory) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
         }
+        
+        note.content = content
+        note.category = category
+        note.lastModified = Date()
+        try context.save()
+    }
+    
+    func deleteParentNote(_ note: ParentNote) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        
+        context.delete(note)
+        try context.save()
+    }
+    
+    // MARK: - Transport Requests CRUD
+    
+    func getTransportRequests(for childId: UUID) -> [TransportRequest] {
+        guard let context = modelContext else { return [] }
+        
+        let predicate = #Predicate<TransportRequest> { $0.childId == childId }
+        let descriptor = FetchDescriptor(predicate: predicate, sortBy: [SortDescriptor(\.requestDate, order: .reverse)])
+        
+        return (try? context.fetch(descriptor)) ?? []
+    }
+    
+    func createTransportRequest(_ request: TransportRequest) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        
+        context.insert(request)
+        try context.save()
+    }
+    
+    func updateTransportRequest(_ request: TransportRequest, pickupNote: String, authorizedCollector: String, collectorPhone: String) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        
+        request.pickupNote = pickupNote
+        request.authorizedCollector = authorizedCollector
+        request.collectorPhone = collectorPhone
+        request.lastModified = Date()
+        try context.save()
+    }
+    
+    func cancelTransportRequest(_ request: TransportRequest) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        
+        request.status = .cancelled
+        request.lastModified = Date()
+        try context.save()
+    }
+    
+    func deleteTransportRequest(_ request: TransportRequest) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        
+        context.delete(request)
+        try context.save()
+    }
+    
+    // MARK: - Child Update
+    
+    func updateChildInfo(child: Child, emergencyContact: String, allergies: String) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        
+        child.emergencyContact = emergencyContact
+        child.allergies = allergies
+        try context.save()
     }
     
     // MARK: - Data Refresh

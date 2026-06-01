@@ -9,11 +9,7 @@ import SwiftUI
 
 struct DiaryDetailView: View {
     let entry: DiaryEntry
-    var viewModel: DiaryViewModel?
-    
     @Environment(\.dismiss) private var dismiss
-    @State private var showingEditSheet = false
-    @State private var showingDeleteAlert = false
     
     var body: some View {
         ScrollView {
@@ -141,45 +137,11 @@ struct DiaryDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                HStack(spacing: 16) {
-                    if viewModel != nil {
-                        Button(action: {
-                            showingEditSheet = true
-                        }) {
-                            Image(systemName: "pencil")
-                                .accessibilityLabel("Edit")
-                        }
-                        
-                        Button(role: .destructive, action: {
-                            showingDeleteAlert = true
-                        }) {
-                            Image(systemName: "trash")
-                                .accessibilityLabel("Delete")
-                        }
-                    }
-                    
-                    Button(action: {
-                        // Share functionality could be added here
-                    }) {
-                        Image(systemName: "square.and.arrow.up")
-                            .accessibilityLabel("Share")
-                    }
-                }
-            }
-        }
-        .alert("Delete Entry", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
-                viewModel?.deleteEntry(entry)
-                dismiss()
-            }
-        } message: {
-            Text("Are you sure you want to delete this diary entry? This action cannot be undone.")
-        }
-        .sheet(isPresented: $showingEditSheet) {
-            if let viewModel = viewModel {
-                DiaryEntryFormView(childId: entry.childId, entry: entry) { updatedEntry in
-                    viewModel.updateEntry(updatedEntry)
+                Button(action: {
+                    // Share functionality could be added here
+                }) {
+                    Image(systemName: "square.and.arrow.up")
+                        .accessibilityLabel("Share")
                 }
             }
         }
@@ -197,43 +159,9 @@ struct DiaryDetailView: View {
     }
 }
 
-struct InfoBox: View {
-    let icon: String
-    let title: String
-    let message: String
-    let color: Color
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundStyle(color)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.primary)
-                
-                Text(message)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(color.opacity(0.1))
-        )
-    }
-}
-
 #Preview {
     NavigationStack {
-        DiaryDetailView(
-            entry: SampleDataProvider.shared.sampleDiaryEntries[0],
-            viewModel: DiaryViewModel()
-        )
+        DiaryDetailView(entry: SampleDataProvider.shared.sampleDiaryEntries[0])
     }
 }
 

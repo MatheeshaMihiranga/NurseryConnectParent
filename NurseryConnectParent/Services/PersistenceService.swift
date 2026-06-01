@@ -26,7 +26,9 @@ class PersistenceService {
             Child.self,
             DiaryEntry.self,
             TransportUpdate.self,
-            NotificationItem.self
+            NotificationItem.self,
+            ParentNote.self,
+            TransportRequest.self
         ])
         
         let modelConfiguration = ModelConfiguration(
@@ -53,7 +55,9 @@ class PersistenceService {
             Child.self,
             DiaryEntry.self,
             TransportUpdate.self,
-            NotificationItem.self
+            NotificationItem.self,
+            ParentNote.self,
+            TransportRequest.self
         ])
         
         let modelConfiguration = ModelConfiguration(

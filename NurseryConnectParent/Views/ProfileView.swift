@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     @State private var child = SampleDataProvider.shared.sampleChild
     @State private var showingSettings = false
+    @State private var showingEditChild = false
     
     var body: some View {
         NavigationStack {
@@ -126,6 +127,18 @@ struct ProfileView: View {
                 }
             }
             .navigationTitle("Profile")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        showingEditChild = true
+                    }) {
+                        Label("Edit", systemImage: "pencil.circle.fill")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingEditChild) {
+                EditChildInfoView(child: child)
+            }
         }
     }
 }
