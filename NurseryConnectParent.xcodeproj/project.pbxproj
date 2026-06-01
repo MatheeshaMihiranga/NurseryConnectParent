@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5A3F859D2FCDF1D10091BD0E /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 5A3F859C2FCDF1D10091BD0E /* RealityKitContent */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		AA1122334455667700007777 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -25,14 +29,34 @@
 
 /* Begin PBXFileReference section */
 		5A3DFEF62F93B70900BD7346 /* NurseryConnectParent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NurseryConnectParent.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A3F85982FCDF1D10091BD0E /* NurseryConnectVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NurseryConnectVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A3F859B2FCDF1D10091BD0E /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		AA1122334455667700001111 /* NurseryConnectParentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NurseryConnectParentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB1122334455667700001111 /* NurseryConnectParentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NurseryConnectParentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5A3F85A72FCDF1D30091BD0E /* Exceptions for "NurseryConnectVision" folder in "NurseryConnectVision" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5A3F85972FCDF1D10091BD0E /* NurseryConnectVision */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5A3DFEF82F93B70900BD7346 /* NurseryConnectParent */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = NurseryConnectParent;
+			sourceTree = "<group>";
+		};
+		5A3F85992FCDF1D10091BD0E /* NurseryConnectVision */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5A3F85A72FCDF1D30091BD0E /* Exceptions for "NurseryConnectVision" folder in "NurseryConnectVision" target */,
+			);
+			path = NurseryConnectVision;
 			sourceTree = "<group>";
 		};
 		AA1122334455667700002222 /* NurseryConnectParentTests */ = {
@@ -52,6 +76,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5A3F85952FCDF1D10091BD0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A3F859D2FCDF1D10091BD0E /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +110,8 @@
 				5A3DFEF82F93B70900BD7346 /* NurseryConnectParent */,
 				AA1122334455667700002222 /* NurseryConnectParentTests */,
 				BB1122334455667700002222 /* NurseryConnectParentUITests */,
+				5A3F85992FCDF1D10091BD0E /* NurseryConnectVision */,
+				5A3F859A2FCDF1D10091BD0E /* Packages */,
 				5A3DFEF72F93B70900BD7346 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +122,17 @@
 				5A3DFEF62F93B70900BD7346 /* NurseryConnectParent.app */,
 				AA1122334455667700001111 /* NurseryConnectParentTests.xctest */,
 				BB1122334455667700001111 /* NurseryConnectParentUITests.xctest */,
+				5A3F85982FCDF1D10091BD0E /* NurseryConnectVision.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5A3F859A2FCDF1D10091BD0E /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				5A3F859B2FCDF1D10091BD0E /* RealityKitContent */,
+			);
+			path = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -115,6 +158,29 @@
 			);
 			productName = NurseryConnectParent;
 			productReference = 5A3DFEF62F93B70900BD7346 /* NurseryConnectParent.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5A3F85972FCDF1D10091BD0E /* NurseryConnectVision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5A3F85A82FCDF1D30091BD0E /* Build configuration list for PBXNativeTarget "NurseryConnectVision" */;
+			buildPhases = (
+				5A3F85942FCDF1D10091BD0E /* Sources */,
+				5A3F85952FCDF1D10091BD0E /* Frameworks */,
+				5A3F85962FCDF1D10091BD0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5A3F85992FCDF1D10091BD0E /* NurseryConnectVision */,
+			);
+			name = NurseryConnectVision;
+			packageProductDependencies = (
+				5A3F859C2FCDF1D10091BD0E /* RealityKitContent */,
+			);
+			productName = NurseryConnectVision;
+			productReference = 5A3F85982FCDF1D10091BD0E /* NurseryConnectVision.app */;
 			productType = "com.apple.product-type.application";
 		};
 		AA1122334455667700006666 /* NurseryConnectParentTests */ = {
@@ -172,6 +238,9 @@
 					5A3DFEF52F93B70900BD7346 = {
 						CreatedOnToolsVersion = 26.3;
 					};
+					5A3F85972FCDF1D10091BD0E = {
+						CreatedOnToolsVersion = 26.3;
+					};
 					AA1122334455667700006666 = {
 						CreatedOnToolsVersion = 26.3;
 						TestTargetID = 5A3DFEF52F93B70900BD7346;
@@ -199,12 +268,20 @@
 				5A3DFEF52F93B70900BD7346 /* NurseryConnectParent */,
 				AA1122334455667700006666 /* NurseryConnectParentTests */,
 				BB1122334455667700006666 /* NurseryConnectParentUITests */,
+				5A3F85972FCDF1D10091BD0E /* NurseryConnectVision */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5A3DFEF42F93B70900BD7346 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5A3F85962FCDF1D10091BD0E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -229,6 +306,13 @@
 
 /* Begin PBXSourcesBuildPhase section */
 		5A3DFEF22F93B70900BD7346 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5A3F85942FCDF1D10091BD0E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -450,6 +534,68 @@
 			};
 			name = Release;
 		};
+		5A3F85A52FCDF1D30091BD0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CJ5AYMRF28;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nurseryconnect.NurseryConnectVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		5A3F85A62FCDF1D30091BD0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CJ5AYMRF28;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nurseryconnect.NurseryConnectVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
 		AA1122334455667700009999 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -561,6 +707,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		5A3F85A82FCDF1D30091BD0E /* Build configuration list for PBXNativeTarget "NurseryConnectVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A3F85A52FCDF1D30091BD0E /* Debug */,
+				5A3F85A62FCDF1D30091BD0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AA112233445566770000BBBB /* Build configuration list for PBXNativeTarget "NurseryConnectParentTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -580,6 +735,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5A3F859C2FCDF1D10091BD0E /* RealityKitContent */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RealityKitContent;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5A3DFEEE2F93B70900BD7346 /* Project object */;
 }

@@ -149,7 +149,7 @@ struct IncidentReportsView: View {
 
     private var emptyStateDescription: String {
         if !searchText.isEmpty {
-            return "No reports match "\(searchText)". Try a different search."
+            return "No reports match \"\(searchText)\". Try a different search."
         }
         switch selectedFilter {
         case .all:          return "No incident reports have been filed."

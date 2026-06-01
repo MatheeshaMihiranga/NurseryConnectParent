@@ -13,6 +13,7 @@
 //                            validation, and persists directly via SwiftData.
 
 import SwiftUI
+import SwiftData
 import PencilKit
 
 // MARK: - PencilKit UIViewRepresentable Wrapper

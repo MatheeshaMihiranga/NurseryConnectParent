@@ -37,7 +37,7 @@ struct TransportStatusCard: View {
             // Details
             VStack(spacing: 12) {
                 if let boardingTime = transportUpdate.boardingTime {
-                    DetailRow(
+                    TransportDetailRow(
                         icon: "clock.fill",
                         title: "Boarding Time",
                         value: boardingTime.formatted(date: .omitted, time: .shortened)
@@ -45,7 +45,7 @@ struct TransportStatusCard: View {
                 }
                 
                 if let eta = transportUpdate.estimatedArrival {
-                    DetailRow(
+                    TransportDetailRow(
                         icon: "location.fill",
                         title: "Estimated Arrival",
                         value: eta.formatted(date: .omitted, time: .shortened)
@@ -53,7 +53,7 @@ struct TransportStatusCard: View {
                 }
                 
                 if !transportUpdate.currentLocation.isEmpty {
-                    DetailRow(
+                    TransportDetailRow(
                         icon: "mappin.circle.fill",
                         title: "Current Location",
                         value: transportUpdate.currentLocation
@@ -61,7 +61,7 @@ struct TransportStatusCard: View {
                 }
                 
                 if !transportUpdate.driverName.isEmpty {
-                    DetailRow(
+                    TransportDetailRow(
                         icon: "person.fill",
                         title: "Driver",
                         value: transportUpdate.driverName
@@ -69,7 +69,7 @@ struct TransportStatusCard: View {
                 }
                 
                 if !transportUpdate.vehicleNumber.isEmpty {
-                    DetailRow(
+                    TransportDetailRow(
                         icon: "bus.fill",
                         title: "Vehicle",
                         value: transportUpdate.vehicleNumber
@@ -105,7 +105,7 @@ struct TransportStatusCard: View {
     }
 }
 
-struct DetailRow: View {
+struct TransportDetailRow: View {
     let icon: String
     let title: String
     let value: String
