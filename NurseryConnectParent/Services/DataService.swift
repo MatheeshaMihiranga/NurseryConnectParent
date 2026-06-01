@@ -230,8 +230,65 @@ class DataService {
         try context.save()
     }
     
+    // MARK: - Incident Reports
+
+    func getIncidentReports(for childId: UUID) -> [IncidentReport] {
+        if useSampleData {
+            return sampleProvider.getIncidentReports(for: childId)
+        }
+
+        guard let context = modelContext else { return [] }
+        let predicate = #Predicate<IncidentReport> { $0.childId == childId }
+        let descriptor = FetchDescriptor(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        )
+        return (try? context.fetch(descriptor)) ?? []
+    }
+
+    func getPendingIncidentReports(for childId: UUID) -> [IncidentReport] {
+        getIncidentReports(for: childId).pendingAcknowledgement
+    }
+
+    func getPendingIncidentCount(for childId: UUID) -> Int {
+        getPendingIncidentReports(for: childId).count
+    }
+
+    func createIncidentReport(_ report: IncidentReport) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        context.insert(report)
+        try context.save()
+    }
+
+    func acknowledgeIncidentReport(
+        _ report: IncidentReport,
+        signatureData: Data?
+    ) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        report.parentAcknowledged = true
+        report.acknowledgementDate = Date()
+        report.signatureData = signatureData
+        report.lastModified = Date()
+        try context.save()
+    }
+
+    func deleteIncidentReport(_ report: IncidentReport) throws {
+        guard let context = modelContext else {
+            throw NSError(domain: "DataService", code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "No context available"])
+        }
+        context.delete(report)
+        try context.save()
+    }
+
     // MARK: - Data Refresh
-    
+
     func refreshData() async {
         // In production, this would fetch fresh data from API
         // For MVP with sample data, this is a no-op

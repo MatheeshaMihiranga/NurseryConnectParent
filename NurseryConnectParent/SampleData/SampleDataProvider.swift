@@ -175,8 +175,76 @@ class SampleDataProvider {
         ]
     }()
     
+    // MARK: - Sample Incident Reports
+
+    lazy var sampleIncidentReports: [IncidentReport] = {
+        let childId = sampleChild.id
+        let childName = sampleChild.name
+        let calendar = Calendar.current
+        let now = Date()
+
+        return [
+            // 1 — Serious, unacknowledged (today — most urgent)
+            IncidentReport(
+                childId: childId,
+                childName: childName,
+                title: "Allergic Reaction to Snack",
+                category: .allergy,
+                severity: .serious,
+                date: calendar.date(byAdding: .hour, value: -3, to: now)!,
+                location: "Rainbow Room — Snack Area",
+                incidentDescription: "Emily showed signs of an allergic reaction approximately 10 minutes after consuming an oat biscuit. Symptoms included facial flushing and mild hives on the forearms. No anaphylaxis observed.",
+                immediateActionTaken: "Removed offending food immediately. Administered prescribed antihistamine from Emily's medical bag. Placed in recovery position and monitored continuously. NHS 111 called for advice — advised to monitor for 2 hours and attend A&E if symptoms worsen.",
+                witnesses: "Sarah Miller, James Wilson",
+                affectedBodyArea: "Face, Forearms",
+                managerApproved: true,
+                managerName: "Helen Carter",
+                parentAcknowledged: false
+            ),
+
+            // 2 — Minor, unacknowledged (yesterday)
+            IncidentReport(
+                childId: childId,
+                childName: childName,
+                title: "Minor Trip in Outdoor Area",
+                category: .fall,
+                severity: .minor,
+                date: calendar.date(byAdding: .day, value: -1, to: now)!,
+                location: "Outdoor Play Area",
+                incidentDescription: "Emily tripped over the edge of the sandpit border while running towards the climbing frame. She fell forward onto the grass surface.",
+                immediateActionTaken: "Checked for injuries — small graze to left knee. Area cleaned with antiseptic wipe and covered with a plaster. Emily was comforted and returned to play within 5 minutes.",
+                witnesses: "Emma Davis",
+                affectedBodyArea: "Left Knee",
+                managerApproved: true,
+                managerName: "Helen Carter",
+                parentAcknowledged: false
+            ),
+
+            // 3 — Moderate, already acknowledged (last week)
+            IncidentReport(
+                id: UUID(),
+                childId: childId,
+                childName: childName,
+                title: "Behaviour Incident — Biting",
+                category: .behaviour,
+                severity: .moderate,
+                date: calendar.date(byAdding: .day, value: -7, to: now)!,
+                location: "Rainbow Room",
+                incidentDescription: "During free play, Emily bit another child on the arm after a dispute over a toy. The affected child was immediately comforted and the bite mark was assessed — skin not broken.",
+                immediateActionTaken: "Both children separated calmly. Affected child's arm cleaned and monitored. Emily given age-appropriate explanation of why biting is not acceptable. Incident logged and both sets of parents notified.",
+                witnesses: "Sarah Miller",
+                affectedBodyArea: "N/A (perpetrating child)",
+                managerApproved: true,
+                managerName: "Helen Carter",
+                parentAcknowledged: true,
+                acknowledgementDate: calendar.date(byAdding: .day, value: -6, to: now)!,
+                signatureData: nil  // Signature was collected on paper for this historical record
+            )
+        ]
+    }()
+
     // MARK: - Helper Methods
-    
+
     func getDiaryEntries(for childId: UUID) -> [DiaryEntry] {
         sampleDiaryEntries.filter { $0.childId == childId }
     }
@@ -194,5 +262,13 @@ class SampleDataProvider {
     
     func getUnreadNotificationCount() -> Int {
         sampleNotifications.filter { !$0.isRead }.count
+    }
+
+    func getIncidentReports(for childId: UUID) -> [IncidentReport] {
+        sampleIncidentReports.filter { $0.childId == childId }
+    }
+
+    func getPendingIncidentCount(for childId: UUID) -> Int {
+        getIncidentReports(for: childId).pendingCount
     }
 }

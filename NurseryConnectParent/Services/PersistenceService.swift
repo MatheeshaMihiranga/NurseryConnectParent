@@ -28,7 +28,8 @@ class PersistenceService {
             TransportUpdate.self,
             NotificationItem.self,
             ParentNote.self,
-            TransportRequest.self
+            TransportRequest.self,
+            IncidentReport.self
         ])
         
         let modelConfiguration = ModelConfiguration(
@@ -57,7 +58,8 @@ class PersistenceService {
             TransportUpdate.self,
             NotificationItem.self,
             ParentNote.self,
-            TransportRequest.self
+            TransportRequest.self,
+            IncidentReport.self
         ])
         
         let modelConfiguration = ModelConfiguration(
@@ -121,7 +123,12 @@ class PersistenceService {
         for notification in provider.sampleNotifications {
             context.insert(notification)
         }
-        
+
+        // Insert incident reports
+        for report in provider.sampleIncidentReports {
+            context.insert(report)
+        }
+
         // Save
         do {
             try context.save()
@@ -160,12 +167,15 @@ class PersistenceService {
     
     func resetAllData() throws {
         guard let context = mainContext else { return }
-        
+
         try deleteAll(ofType: Child.self)
         try deleteAll(ofType: DiaryEntry.self)
         try deleteAll(ofType: TransportUpdate.self)
         try deleteAll(ofType: NotificationItem.self)
-        
+        try deleteAll(ofType: ParentNote.self)
+        try deleteAll(ofType: TransportRequest.self)
+        try deleteAll(ofType: IncidentReport.self)
+
         print("✅ All data reset successfully")
     }
 }
